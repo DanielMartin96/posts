@@ -42,7 +42,7 @@ func (d *Database) GetPost(ctx context.Context, uuid string) (post.Post, error) 
 	return convertPostRowToPost(pstRow), nil
 }
 
-func (d *Database) CreateComment(ctx context.Context, pst post.Post) (post.Post, error)  {
+func (d *Database) CreatePost(ctx context.Context, pst post.Post) (post.Post, error)  {
 	pst.ID = uuid.NewV4().String()
 	postRow := PostRow{
 		ID: pst.ID,
@@ -104,6 +104,6 @@ func (d *Database) DeletePost(ctx context.Context, id string) error {
 	if err != nil {
 		return fmt.Errorf("failed to delete post from the database: %w", err)
 	}
-	
+
 	return nil
 }

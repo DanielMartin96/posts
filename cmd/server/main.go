@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 
+	transportHTTP "github.com/DanielMartin/posts/internal/transport/http"
 	"github.com/DanielMartin96/posts/internal/database"
+	"github.com/DanielMartin96/posts/internal/post"
 )
 
 func Run() error  {
@@ -18,6 +20,13 @@ func Run() error  {
 	if err != nil {
 		return fmt.Errorf("failed to setup database: %w", err)
 	}
+
+	postService := post.NewService(store)
+	handler := transportHTTP.NewHandler(postService)
+	if err := handler.Serve(); err != nil {
+		return fmt.Errorf("failed to gracefully serve our application: %w", err)
+	}
+
 	return nil
 }
 
