@@ -1,11 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-func run()  {
+func Run() error  {
 	fmt.Println("Setting Up Our App")
+
+	var err error
+
+	return nil
 }
 
 func main()  {
-	run()
+	if err := Run(); err != nil {
+		fmt.Println("fatal error")
+	}
 }
