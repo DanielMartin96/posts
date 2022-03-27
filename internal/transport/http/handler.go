@@ -29,13 +29,23 @@ func NewHandler(service PostService) *Handler {
 	h.Router = mux.NewRouter()
 
 	h.MapRoutes()
+
+	h.Server = &http.Server{
+		Addr: "0.0.0.0:8080",
+		WriteTimeout: time.Second * 15,
+		ReadTimeout:  time.Second * 15,
+		IdleTimeout:  time.Second * 60,
+		Handler:      h.Router,
+	}
+
+	return h
 }
 
 func (h *Handler) MapRoutes() {
-	h.Router.HandleFunc("/api/v1/comment", h.PostComment).Methods("POST")
-	h.Router.HandleFunc("/api/v1/comment/{id}", h.GetComment).Methods("GET")
-	h.Router.HandleFunc("/api/v1/comment/{id}", h.UpdateComment).Methods("PUT")
-	h.Router.HandleFunc("/api/v1/comment/{id}", h.DeleteComment).Methods("DELETE")
+	h.Router.HandleFunc("/api/v1/post/{id}", h.GetPost).Methods("GET")
+	h.Router.HandleFunc("/api/v1/post", h.CreatePost).Methods("POST")	
+	h.Router.HandleFunc("/api/v1/post/{id}", h.UpdatePost).Methods("PUT")
+	h.Router.HandleFunc("/api/v1/post/{id}", h.DeletePost).Methods("DELETE")
 }
 
 func (h *Handler) Serve() error {
